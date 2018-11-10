@@ -1,7 +1,7 @@
 import { createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers';
 import axios from 'axios';
 import { multiClientMiddleware } from 'redux-axios-middleware';
-import { environment } from '../config';
+import { environment, apikey } from '../config';
   
 const navMiddleware = createReactNavigationReduxMiddleware(
     'root',
@@ -32,7 +32,9 @@ const clients = {
 const axiosMiddlewareOptions = {
   interceptors: {
     request: [(state, config) => {
-        return config 
+        let newConfig = config
+        newConfig.params['api-key'] = environment.apikey
+        return newConfig 
       }],
       response: [(state, response) => {
         return response

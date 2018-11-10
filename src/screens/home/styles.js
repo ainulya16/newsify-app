@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 export default {
     container:{
         flex:1, 
-        backgroundColor:'white',
+        // backgroundColor:'white',
     },
     bar:{
         flexDirection:'row',
@@ -10,5 +10,13 @@ export default {
         alignItems:'center',
         paddingRight:15,
         paddingVertical:6
+    },
+    listItem:{
+        paddingHorizontal:15,
+        paddingVertical:10
+    },
+    rowTitle:{
+        lineHeight:18,
+        fontSize:14
     }
 }

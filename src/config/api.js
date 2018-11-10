@@ -1,3 +1,3 @@
 export const api = {
-  articles:'/get_user.php',
+  articles:'search/v2/articlesearch.json',
 }
