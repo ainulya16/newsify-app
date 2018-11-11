@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../styles';
 export default {
     container:{
         flex:1, 
-        // backgroundColor:'white',
     },
     bar:{
+        backgroundColor:colors.primary,
         flexDirection:'row',
         justifyContent:'space-between',
         alignItems:'center',
@@ -18,5 +19,8 @@ export default {
     rowTitle:{
         lineHeight:18,
         fontSize:14
+    },
+    loadingContainer:{
+        padding:10,
     }
 }

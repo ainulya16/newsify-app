@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
-import { DropDownMenu, ListView, View, Row, Image, Subtitle, Caption, TextInput } from '@shoutem/ui'
+import { FlatList } from 'react-native';
+import { View, Row, Image, Subtitle, Caption, TextInput, Spinner } from '@shoutem/ui'
 import { get_articles, load_more_article } from '../../../actions'
 import { connect } from 'react-redux'
 import styles from '../styles'
 import moment from 'moment'
 import { environment } from '../../../config'
 import { debounce } from 'lodash'
+import { DropDownMenu } from './dropdown'
 const sortby = [
         {
           name: "Newest",
@@ -28,7 +30,9 @@ class Article extends Component{
     }
 
     componentDidMount(){
-        console.log(this.props)
+        this.initialize()
+    }
+    initialize = () =>{
         this.props.get_articles(this.state)
     }
     onOptionSelected = (val) =>{
@@ -42,7 +46,7 @@ class Article extends Component{
         this.setState({q:text});
         this._debouncedSearch();
     }
-    renderRow(data) {
+    renderRow = ({item:data}) => {
         return (
             <Row style={styles.listItem}>
                 <View styleName="vertical stretch space-between">
@@ -61,9 +65,8 @@ class Article extends Component{
         this.props.load_more_article(this.state)
     }
 
-
     render(){
-        const { data, loading } = this.props
+        const { data, loading, loading_more } = this.props
         return (
             <View style={styles.container}>
                 
@@ -74,7 +77,8 @@ class Article extends Component{
                         onOptionSelected={this.onOptionSelected}
                         titleProperty="name"
                         valueProperty="slug"
-                        style={{height:30}}
+                        styleName="dark"
+                        style={{selectedOption:{height:30}}}
                     />
                     <TextInput
                         placeholder={'Search...'}
@@ -82,11 +86,15 @@ class Article extends Component{
                         onChangeText={this.changeQuery}
                     />
                 </View>
-                <ListView
+                <FlatList
                     data={data}
-                    renderRow={this.renderRow}
-                    loading={loading}
-                    onLoadMore={this.loadMore}
+                    refreshing={loading}
+                    onRefresh={this.initialize}
+                    extraData={this.props}
+                    renderItem={this.renderRow}
+                    keyExtractor={(item,key)=>key}
+                    onEndReached={this.loadMore}
+                    ListFooterComponent={loading_more&&<View style={styles.loadingContainer}><Spinner/></View>}
                 />
             </View>
         );
@@ -100,6 +108,7 @@ const mapDispatchToProps = {
 }
 const mapStateToProps = (state) => ({
     data    : state.article.data,
-    loading : state.article.loading_article
+    loading : state.article.loading_article,
+    loading_more : state.article.loading_more_article
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Article) 

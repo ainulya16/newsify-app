@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { colors } from '../../../styles'
-class FacebookTabBar extends React.Component {
+class CustomTabBar extends React.Component {
 
   constructor(props) {
     super(props);
@@ -33,20 +33,20 @@ class FacebookTabBar extends React.Component {
 
 const styles = StyleSheet.create({
     container:{
+        backgroundColor:colors.primary,
         flexDirection:'row',
         paddingHorizontal:15,
         justifyContent:'space-between',
         paddingTop:15
     },
-    logoContainer:{
-
-    },
     logo:{
         fontFamily:'Rubik-Regular',
-        fontSize:20
+        fontSize:20,
+        color:'white'
     },
     tabTitle:{
-        fontFamily:'Rubik-Regular'
+        fontFamily:'Rubik-Regular',
+        color:'rgba(255,255,255,0.5)'
     },
     tabGroup:{
         flexDirection:'row'
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
     },
     activeTab:{
-        color:colors.primary
+        color:'white'
     },
     tabs: {
         height: 30,
@@ -67,4 +67,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default FacebookTabBar;
+export default CustomTabBar;

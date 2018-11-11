@@ -16,7 +16,7 @@ class Home extends Component{
             
             <ScrollableTabView 
                 style={{paddingTop}}
-            renderTabBar={()=><TabBar {...this.props}/>}
+                renderTabBar={()=><TabBar {...this.props}/>}
             >
               <Article tabLabel="Article" />
               <Book tabLabel="Book" />
