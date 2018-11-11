@@ -6,6 +6,8 @@ export const LOAD_MORE_ARTICLE_SUCCESS = 'LOAD_MORE_ARTICLE_SUCCESS'
 export const LOAD_ARTICLE_FAILURE = 'LOAD_ARTICLE_FAILURE'
 
 export const get_articles = (params) =>{
+    console.log(params)
+
     return {
         type:LOAD_ARTICLE,
         payload:{
@@ -18,7 +20,7 @@ export const get_articles = (params) =>{
                     dispatch({type: LOAD_ARTICLE_SUCCESS, payload: response.data.response.docs})
                 },
                 onError:({dispatch,error})=>{
-                    console.log(error)
+                    console.log(error.message)
                     dispatch({type: LOAD_ARTICLE_FAILURE})
                 }
             }

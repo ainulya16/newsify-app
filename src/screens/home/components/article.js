@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { DropDownMenu, Icon, ListView, View, Row, Image, Subtitle, Caption, TextInput } from '@shoutem/ui'
+import { DropDownMenu, ListView, View, Row, Image, Subtitle, Caption, TextInput } from '@shoutem/ui'
 import { get_articles, load_more_article } from '../../../actions'
 import { connect } from 'react-redux'
 import styles from '../styles'
 import moment from 'moment'
-import { environment } from '../../../config';
+import { environment } from '../../../config'
+import { debounce } from 'lodash'
 const sortby = [
         {
           name: "Newest",
@@ -23,16 +24,23 @@ class Article extends Component{
     }
     constructor(props){
         super(props)
+        this._debouncedSearch = debounce(() => this.searchArticle(),1000);
     }
+
     componentDidMount(){
         console.log(this.props)
         this.props.get_articles(this.state)
     }
     onOptionSelected = (val) =>{
         this.setState({sort:val.slug})
+        this.searchArticle()
     }
     searchArticle(){
         this.props.get_articles(this.state)
+    }
+    changeQuery=(text)=> {
+        this.setState({q:text});
+        this._debouncedSearch();
     }
     renderRow(data) {
         return (
@@ -48,7 +56,7 @@ class Article extends Component{
             </Row>
         );
     }
-    loadMore=()=>{
+    loadMore = () =>{
         this.setState({page:this.state.page+1})
         this.props.load_more_article(this.state)
     }
@@ -58,18 +66,21 @@ class Article extends Component{
         const { data, loading } = this.props
         return (
             <View style={styles.container}>
-                <TextInput
-                    placeholder={'Username or email'}
-                />
+                
                 <View style={styles.bar}>
                     <DropDownMenu 
                         options={sortby}
-                        selectedOption={sortby[0]}
+                        selectedOption={sortby.filter(item=>item.slug==this.state.sort)[0]}
                         onOptionSelected={this.onOptionSelected}
                         titleProperty="name"
                         valueProperty="slug"
+                        style={{height:30}}
                     />
-                    <Icon name='search'/>
+                    <TextInput
+                        placeholder={'Search...'}
+                        style={{flex:1,paddingVertical:5,height:30,borderRadius:5,paddingHorizontal:7}}
+                        onChangeText={this.changeQuery}
+                    />
                 </View>
                 <ListView
                     data={data}
