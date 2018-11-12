@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { FlatList } from 'react-native';
-import { View, Row, Image, Subtitle, Caption, TextInput, Spinner } from '@shoutem/ui'
+import { View, Row, Image, Subtitle, Caption, TextInput, Spinner, TouchableOpacity } from '@shoutem/ui'
 import { get_articles, load_more_article } from '../../../actions'
 import { connect } from 'react-redux'
 import styles from '../styles'
@@ -46,8 +46,12 @@ class Article extends Component{
         this.setState({q:text});
         this._debouncedSearch();
     }
+    detail = (data) =>{
+        this.props.navigation.navigate('Detail',{url:data.web_url})
+    }
     renderRow = ({item:data}) => {
         return (
+            <TouchableOpacity onPress={this.detail.bind(this,data)}>
             <Row style={styles.listItem}>
                 <View styleName="vertical stretch space-between">
                     <Subtitle numberOfLines={2} style={styles.rowTitle}>{data.headline.main}</Subtitle>
@@ -58,6 +62,7 @@ class Article extends Component{
                     source={{ uri: `${environment.url}${data.multimedia.filter(item=>item.subtype=='thumbnail')[0].url}` }}
                 />}
             </Row>
+            </TouchableOpacity>
         );
     }
     loadMore = () =>{
