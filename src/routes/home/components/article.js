@@ -47,7 +47,7 @@ class Article extends Component{
         this._debouncedSearch();
     }
     detail = (data) =>{
-        this.props.navigation.navigate('Detail',{url:data.web_url})
+        this.props.navigation.navigate('Detail',{uri:data.web_url})
     }
     renderRow = ({item:data}) => {
         return (

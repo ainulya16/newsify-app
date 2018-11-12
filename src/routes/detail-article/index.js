@@ -7,10 +7,10 @@ export default class Detail extends Component{
     }
 
     render(){
-        const source = {uri: this.props.navigation.state.params.url}
+        const { uri } = this.props.navigation.state.params
         return (
             <View style={[styles.container]}>
-                <WebView source={source} style={{flex:1}}/>
+                <WebView source={{uri}} style={{flex:1}}/>
             </View>
         );
     }
